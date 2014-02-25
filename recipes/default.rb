@@ -2,10 +2,19 @@ require 'resolv'
 require 'chef/util/file_edit'
 
 src_filename = ::File.basename(node['chef-server']['package_url'])
-file_path = "#{Chef::Config['file_cache_path']}/#{src_filename}"
 
-execute "wget -O #{file_path} #{node['chef-server']['package_url']}" do
-  user 'root'
+if Dir.exist? '/vagrant'
+  file_path = "/vagrant/tmp/#{src_filename}"
+else
+  file_path = "#{Chef::Config['file_cache_path']}/#{src_filename}"
+end
+
+unless File.exist? file_path
+  package "wget"
+
+  execute "wget -O #{file_path} #{node['chef-server']['package_url']}" do
+    user 'root'
+  end
 end
 
 execute "dpkg -i #{file_path}" do
