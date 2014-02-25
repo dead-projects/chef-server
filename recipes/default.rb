@@ -4,9 +4,8 @@ require 'chef/util/file_edit'
 src_filename = ::File.basename(node['chef-server']['package_url'])
 file_path = "#{Chef::Config['file_cache_path']}/#{src_filename}"
 
-remote_file file_path do
-  source node['chef-server']['package_url']
-  action :create_if_missing
+execute "wget -O #{file_path} #{node['chef-server']['package_url']}" do
+  user 'root'
 end
 
 execute "dpkg -i #{file_path}" do
