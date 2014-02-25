@@ -9,7 +9,7 @@ remote_file file_path do
   action :create_if_missing
 end
 
-package package_name do
+package 'chef_server' do
   source file_path
   provider case node['platform_family']
              when 'debian'; Chef::Provider::Package::Dpkg
