@@ -9,11 +9,6 @@ remote_file file_path do
   action :create_if_missing
 end
 
-remote_file node['chef-server']['package_url'] do
-  path file_path
-  action :create_if_missing
-end
-
 package package_name do
   source file_path
   provider case node['platform_family']
