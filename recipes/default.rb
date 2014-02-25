@@ -9,15 +9,8 @@ remote_file file_path do
   action :create_if_missing
 end
 
-package 'chef_server' do
-  source file_path
-  provider case node['platform_family']
-             when 'debian'; Chef::Provider::Package::Dpkg
-             when 'rhel'; Chef::Provider::Package::Rpm
-             else
-               raise RuntimeError("I don't know how to install chef-server packages for platform family #{node['platform_family']}!")
-           end
-  action :install
+execute "dpkg -i #{file_path}" do
+  user 'root'
 end
 
 ruby_block "ensure node can resolve API FQDN" do
