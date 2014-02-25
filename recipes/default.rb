@@ -9,7 +9,7 @@ remote_file file_path do
   action :create_if_missing
 end
 
-cookbook_file node['chef-server']['package'] do
+remote_file node['chef-server']['package_url'] do
   path file_path
   action :create_if_missing
 end
