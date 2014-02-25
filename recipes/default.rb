@@ -6,7 +6,6 @@ src_filename = ::File.basename(node['chef-server']['package_url'])
 if Dir.exist? '/vagrant'
   file_path = "/vagrant/.vagrant/cache/#{src_filename}"
 
-  # create the chef-server etc directory
   directory '/vagrant/.vagrant/cache/' do
     owner 'root'
     group 'root'
