@@ -4,7 +4,15 @@ require 'chef/util/file_edit'
 src_filename = ::File.basename(node['chef-server']['package_url'])
 
 if Dir.exist? '/vagrant'
-  file_path = "/vagrant/tmp/#{src_filename}"
+  file_path = "/vagrant/.vagrant/cache/#{src_filename}"
+
+  # create the chef-server etc directory
+  directory '/vagrant/.vagrant/cache/' do
+    owner 'root'
+    group 'root'
+    recursive true
+    action :create
+  end
 else
   file_path = "#{Chef::Config['file_cache_path']}/#{src_filename}"
 end
